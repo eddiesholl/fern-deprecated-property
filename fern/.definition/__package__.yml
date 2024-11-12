@@ -1,0 +1,153 @@
+types:
+  OauthScope:
+    enum:
+      - value: read
+        docs: Read access
+      - value: write
+        docs: Write access
+  CottonCropState:
+    enum:
+      - nsw
+      - vic
+      - qld
+      - sa
+      - wa_nw
+      - wa_sw
+      - tas
+      - nt
+      - act
+    docs: >-
+      What state the location is in. Note: Western Australia is split up into
+      two regions, `wa_nw` is North-West Western Australia, `wa_sw` is
+      South-West Western Australia
+  CottonCropOtherFertiliserType:
+    enum:
+      - value: Monoammonium phosphate (MAP)
+        name: MonoammoniumPhosphateMap
+      - value: Diammonium Phosphate (DAP)
+        name: DiammoniumPhosphateDap
+      - value: Urea-Ammonium Nitrate (UAN)
+        name: UreaAmmoniumNitrateUan
+      - value: Ammonium Nitrate (AN)
+        name: AmmoniumNitrateAn
+      - value: Calcium Ammonium Nitrate (CAN)
+        name: CalciumAmmoniumNitrateCan
+      - value: Triple Superphosphate (TSP)
+        name: TripleSuperphosphateTsp
+      - value: Super Potash 1:1
+        name: SuperPotash11
+      - value: Super Potash 2:1
+        name: SuperPotash21
+      - value: Super Potash 3:1
+        name: SuperPotash31
+      - value: Super Potash 4:1
+        name: SuperPotash41
+      - value: Super Potash 5:1
+        name: SuperPotash51
+      - value: Muriate of Potash
+        name: MuriateOfPotash
+      - value: Sulphate of Potash
+        name: SulphateOfPotash
+      - value: Sulphate of Ammonia
+        name: SulphateOfAmmonia
+    docs: Other N fertiliser type
+  CottonCrop:
+    properties:
+      state:
+        type: CottonCropState
+        docs: >-
+          What state the location is in. Note: Western Australia is split up
+          into two regions, `wa_nw` is North-West Western Australia, `wa_sw` is
+          South-West Western Australia
+      averageCottonYield:
+        type: double
+        docs: Average cotton yield, in t/ha (tonnes per hectare)
+      areaSown:
+        type: double
+        docs: Area sown, in ha (hectares)
+      averageWeightPerBaleKg:
+        type: double
+        docs: Average weight of unprocessed cotton per bale, in kg
+      cottonLintPerBaleKg:
+        type: double
+        docs: Average weight of cotton lint per bale, in kg
+      cottonSeedPerBaleKg:
+        type: double
+        docs: Average weight of cotton seed produced per bale, in kg
+      wastePerBaleKg:
+        type: double
+        docs: Average weight of cotton waste produced per bale, in kg
+      ureaApplication:
+        type: double
+        docs: Urea application, in kg Urea/ha (kilograms of urea per hectare)
+      otherFertiliserType:
+        type: optional<CottonCropOtherFertiliserType>
+        docs: Other N fertiliser type
+      otherFertiliserApplication:
+        type: double
+        docs: Other N fertiliser application, in kg/ha (kilograms per hectare)
+      nonUreaNitrogen:
+        type: optional<double>
+        docs: >-
+          Non-urea nitrogen application, in kg N/ha (kilograms of nitrogen per
+          hectare)
+      ureaAmmoniumNitrate:
+        type: optional<double>
+        docs: >-
+          Urea-Ammonium nitrate application, in kg product/ha (kilograms of
+          product per hectare)
+      phosphorusApplication:
+        type: optional<double>
+        docs: >-
+          Phosphorus application, in kg P/ha (kilograms of phosphorus per
+          hectare)
+      potassiumApplication:
+        type: optional<double>
+        docs: Potassium application, in kg K/ha (kilograms of potassium per hectare)
+      sulfurApplication:
+        type: optional<double>
+        docs: Sulfur application, in kg S/ha (kilograms of sulfur per hectare)
+      singleSuperPhosphate:
+        type: double
+        docs: Single superphosphate use, in kg/ha (kilograms per hectare)
+      rainfallAbove600:
+        type: boolean
+        docs: >-
+          Is there enough rainfall or irrigation to drain through the soil
+          profile, typically above 600mm
+      fractionOfAnnualCropBurnt:
+        type: double
+        docs: Fraction of annual production of crop that is burnt, from 0 to 1
+      herbicideUse:
+        type: double
+        docs: >-
+          Total amount of active ingredients from general herbicide/pesticide
+          use, in kg (kilogram)
+      glyphosateOtherHerbicideUse:
+        type: double
+        docs: >-
+          Total amount of active ingredients from other herbicide use (Paraquat,
+          Diquat, Glyphosate), in kg (kilogram)
+      electricityAllocation:
+        type: double
+        docs: Percentage of electricity use to allocate to this crop, from 0 to 1
+      limestone:
+        type: double
+        docs: Lime applied in tonnes
+      limestoneFraction:
+        type: double
+        docs: Fraction of lime as limestone vs dolomite, between 0 and 1
+      dieselUse:
+        type: double
+        docs: Diesel usage in L (litres)
+      petrolUse:
+        type: double
+        docs: Petrol usage in L (litres)
+      lpg:
+        type: double
+        docs: LPG Fuel usage in L (litres)
+errors:
+  UnauthorizedError:
+    status-code: 401
+    type: unknown
+    docs: Unauthorized

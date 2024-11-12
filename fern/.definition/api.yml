@@ -1,0 +1,11 @@
+name: api
+error-discrimination:
+  strategy: status-code
+display-name: Calculator API
+environments:
+  Default: https://example.com/calculator/v1/
+default-environment: Default
+auth-schemes:
+  BearerAuthScheme:
+    scheme: bearer
+auth: BearerAuthScheme

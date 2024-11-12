@@ -1,0 +1,73 @@
+types:
+  CottonInputState:
+    enum:
+      - nsw
+      - vic
+      - qld
+      - sa
+      - wa_nw
+      - wa_sw
+      - tas
+      - nt
+      - act
+    docs: >-
+      What state the location is in. Note: Western Australia is split up into
+      two regions, `wa_nw` is North-West Western Australia, `wa_sw` is
+      South-West Western Australia
+imports:
+  root: __package__.yml
+service:
+  auth: false
+  base-path: ''
+  endpoints:
+    post-cotton:
+      path: /cotton
+      method: POST
+      auth: true
+      docs: Retrieve a simple JSON response
+      display-name: Perform a Cotton calculation
+      request:
+        name: CottonInput
+        body:
+          properties:
+            state:
+              type: CottonInputState
+              docs: >-
+                What state the location is in. Note: Western Australia is split
+                up into two regions, `wa_nw` is North-West Western Australia,
+                `wa_sw` is South-West Western Australia
+            crops: list<root.CottonCrop>
+      response:
+        docs: Executes a calculation
+        type: unknown
+      errors:
+        - root.UnauthorizedError
+      examples:
+        - request:
+            state: nsw
+            crops:
+              - state: nsw
+                averageCottonYield: 1.1
+                areaSown: 1.1
+                averageWeightPerBaleKg: 1.1
+                cottonLintPerBaleKg: 1.1
+                cottonSeedPerBaleKg: 1.1
+                wastePerBaleKg: 1.1
+                ureaApplication: 1.1
+                otherFertiliserApplication: 1.1
+                singleSuperPhosphate: 1.1
+                rainfallAbove600: true
+                fractionOfAnnualCropBurnt: 1.1
+                herbicideUse: 1.1
+                glyphosateOtherHerbicideUse: 1.1
+                electricityAllocation: 1.1
+                limestone: 1.1
+                limestoneFraction: 1.1
+                dieselUse: 1.1
+                petrolUse: 1.1
+                lpg: 1.1
+          response:
+            body:
+              key: value
+  display-name: GAF
+docs: GAF spreadsheet-based calculator
