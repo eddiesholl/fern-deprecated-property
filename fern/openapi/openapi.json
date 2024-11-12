@@ -1,0 +1,89 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Calculator API",
+        "version": "0.1.0",
+        "description": "Emissions Calculators for various farming activities"
+    },
+    "servers": [
+        {
+            "url": "https://example.com/calculator/v1/",
+            "description": "Production Server"
+        }
+    ],
+    "tags": [
+        {
+            "name": "GAF",
+            "description": "GAF spreadsheet-based calculator"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "oauth2": {
+                "type": "oauth2",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "https://example.com/oauth/authorize",
+                        "tokenUrl": "https://example.com/oauth/token",
+                        "scopes": {
+                            "read": "Read access",
+                            "write": "Write access"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        {
+            "oauth2": [
+                "read",
+                "write"
+            ]
+        }
+    ],
+    "paths": {
+        "/cotton": {
+            "post": {
+                "summary": "Perform a Cotton calculation",
+                "description": "Retrieve a simple JSON response",
+                "operationId": "post-cotton",
+                "security": [
+                    {
+                        "oauth2": [
+                            "read"
+                        ]
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "./schemas/CottonInput.json"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Executes a calculation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "./schemas/CottonOutput.json"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "tags": [
+                    "GAF"
+                ]
+            }
+        }
+    }
+}

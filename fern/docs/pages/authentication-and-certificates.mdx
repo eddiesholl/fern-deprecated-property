@@ -1,0 +1,101 @@
+<Callout intent="success">
+  Get authenticated and start making API requests with the Carbon Calculators.
+</Callout>
+
+## mTLS
+
+To securely authenticate, the API uses mutual TLS (mTLS) to ensure that both the client and server are who they say they are. You'll need a certificate and private key to make requests to the API.
+
+## Getting a Certificate
+
+To get a certificate, you'll need to generate a Certificate Signing Request (CSR) and send it to us. We'll then sign the CSR and send you back a certificate.
+
+<CodeBlock title="Generate Your Private Key">
+  ```bash openssl genrsa -out carbon-calculator-integration.key 4096 ```
+</CodeBlock>
+
+**Note**: You'll need to replace your organisation name in the command below.
+
+<CodeBlock title="Create a Certificate Signing Request from the Key">
+  ```bash openssl req -new -key carbon-calculator-integration.key -subj
+  "/C=AU/ST=New South Wales/L=Sydney/O=[REPLACE ORG NAME HERE]" -out
+  certificate-request.csr ```
+</CodeBlock>
+
+Email the CSR file (and ONLY the CSR, never disclose your private key to anyone, including us) to [contact@example.com.au](contact@example.com.au).
+
+## Making Requests
+
+Now that you have a private key and certificate, you can make requests to the API. Here's an example using cURL:
+
+<CodeBlock title="Generate Your Private Key">
+  ```bash curl --request POST \ --key carbon-calculator-integration.key \ --cert
+  carbon-calculator-integration.pem \ -v \ --url
+  https://emissionscalculator-mtls.production.exampleapi.com/calculator/v1/sheepbeef
+  \ --header 'Accept: application/json' \ --header 'Content-Type:
+  application/json' \ --data '{}' ```
+</CodeBlock>
+
+You'll need to implement the same certificate and key usage in your application to authenticate with the API. We have some example implementations,
+so if you're having trouble just let us know what you're using and we'll help you out.
+
+## User Agent Header
+
+In order for the server to accept your requests, you'll need to specify a user agent. We recommend you set this to the name of your organisation, for example:
+
+```
+User-Agent: my-organisation-name-integration
+```
+
+If you do not specify a user agent, you will get a 403 response with a body like:
+
+```json
+{ "message": "Forbidden" }
+```
+
+This is not the only reason that you might get this message, but it is the most common scenario where integration partners experience this issue.
+
+## Validating Responses
+
+Responses will come back signed with our certificate. You can validate the response by checking:
+
+1. The certificate is not expired.
+2. The certificate is trusted by your operating system's trust store.
+3. The certificate's common name is `*.exampleapi.com`.
+
+For example, here's code that will do this for various languages (more coming soon!):
+
+<CodeBlocks>
+<CodeBlock title=".NET (C#)">
+```csharp
+Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> ValidateServerCertificate = (sender, certificate, chain, sslPolicyErrors) => {
+    if (certificate == null) return false;
+    if (certificate.NotBefore > DateTime.Now || certificate.NotAfter < DateTime.Now)
+    {
+        Console.WriteLine("Server certificate is expired or not yet valid");
+        return false;
+    }
+
+    if (certificate.Subject != "CN=*.exampleapi.com")
+    {
+        Console.WriteLine("Server certificate is not issued for *.exampleapi.com");
+        return false;
+    }
+
+    if (!certificate.Verify()) {
+        Console.WriteLine("Server certificate did not pass verify check.");
+        return false;
+    }
+
+    return true;
+
+};
+
+```
+</CodeBlock>
+</CodeBlocks>
+
+## Need Help?
+
+Email us at [contact@example.com.au](contact@example.com.au) and we'll do our best to reply within 48 hours.
+```

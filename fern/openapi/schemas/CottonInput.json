@@ -1,0 +1,32 @@
+{
+  "properties": {
+    "state": {
+      "enum": [
+        "nsw",
+        "vic",
+        "qld",
+        "sa",
+        "wa_nw",
+        "wa_sw",
+        "tas",
+        "nt",
+        "act"
+      ],
+      "type": "string",
+      "description": "What state the location is in. Note: Western Australia is split up into two regions, `wa_nw` is North-West Western Australia, `wa_sw` is South-West Western Australia"
+    },
+    "crops": {
+      "items": {
+        "$ref": "./CottonCrop.json"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "required": [
+    "state",
+    "crops"
+  ],
+  "description": "Input data required for the `cotton` calculator",
+  "title": "CottonInput"
+}

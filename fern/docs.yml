@@ -1,0 +1,35 @@
+instances:
+  - url: example.docs.buildwithfern.com
+    custom-domain: docs.exampleplatform.com.au
+
+title: Calculators | Docs
+
+navigation:
+  - section: Getting started
+    contents:
+      - page: Welcome
+        path: ./docs/pages/welcome.mdx
+      - page: Authentication and Certificates
+        path: ./docs/pages/authentication-and-certificates.mdx
+  - api: API Reference
+    alphabetized: true
+
+navbar-links:
+  - type: secondary
+    text: Email us
+    url: "mailto:contact@example.com.au"
+  - type: primary
+    text: Contact us
+    url: https://example.com.au/contact-us/
+
+colors:
+  accentPrimary:
+    light: "#3171eb"
+    dark: "#3171eb"
+
+logo:
+  dark: ./docs/assets/logo-dark.svg
+  light: ./docs/assets/logo-light.svg
+  height: 70
+
+favicon: ./docs/assets/favicon-32x32.png
